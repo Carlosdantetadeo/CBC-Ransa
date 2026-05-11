@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" class="theme-light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Registro de Jornada — LogisticaHR</title>
+  <meta name="description" content="Registro de asistencia y jornada para auxiliares de LogisticaHR">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Auxiliar-specific overrides */
+    body { background: linear-gradient(160deg, #e8ecf4 0%, #dfe3ee 50%, #d3d8e8 100%); }
+    .state-panel { animation: slideUp .3s ease; }
+  </style>
+</head>
+<body>
+  <div class="auxiliar-container" id="app">
+    <div class="watermark-corner">LogisticaRH</div>
+
+    <!-- ESTADO A — Ingreso de DNI -->
+    <div id="state-a" class="auxiliar-card card">
+      <div class="auxiliar-header">
+        <div class="icon-circle" style="background: transparent; padding: 2px;">
+          <img src="logo.png" alt="LogisticaRH Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">
+        </div>
+        <h1>Registro de Jornada</h1>
+        <p>Ingresa tu DNI para iniciar</p>
+      </div>
+
+      <div class="form-group">
+        <label for="input-dni">DNI (8 dígitos)</label>
+        <input type="tel" id="input-dni" class="input-lg" inputmode="numeric" pattern="[0-9]{8}"
+               maxlength="8" placeholder="_ _ _ _ _ _ _ _" autocomplete="off">
+      </div>
+
+      <div id="error-dni" class="banner banner-danger hidden" role="alert"></div>
+
+      <button id="btn-ingresar" class="btn btn-primary btn-xl" onclick="handleLogin()">
+        Ingresar
+      </button>
+    </div>
+
+    <!-- ESTADO B — Check-in -->
+    <div id="state-b" class="auxiliar-card card hidden state-panel">
+      <div class="auxiliar-header">
+        <div class="icon-circle">🚛</div>
+        <h1 id="checkin-nombre"></h1>
+        <p id="checkin-fecha"></p>
+      </div>
+
+      <div class="form-group">
+        <label for="input-ruta">Código de Ruta (asignado por Ransa)</label>
+        <input type="text" id="input-ruta" class="input-lg" placeholder="Ej: R-042"
+               maxlength="20" autocomplete="off">
+      </div>
+
+      <div id="error-ruta" class="banner banner-danger hidden" role="alert"></div>
+
+      <button id="btn-checkin" class="btn btn-success btn-xl" onclick="handleCheckin()">
+        🟢 INICIAR JORNADA
+      </button>
+
+      <button class="btn btn-ghost btn-xl" style="margin-top:.5rem" onclick="handleLogout()">
+        ← Cambiar DNI
+      </button>
+    </div>
+
+    <!-- ESTADO C — En ruta -->
+    <div id="state-c" class="auxiliar-card card hidden state-panel">
+      <div class="auxiliar-header">
+        <div class="icon-circle" style="background:linear-gradient(135deg,#f59e0b,#f97316)">⏱️</div>
+        <h1 id="enruta-nombre"></h1>
+        <p>Ruta: <strong id="enruta-ruta"></strong></p>
+      </div>
+
+      <div class="summary-box" style="text-align:center;margin-bottom:1rem">
+        <div style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.25rem">Hora de inicio</div>
+        <div id="enruta-hora-inicio" style="font-size:1.125rem;font-weight:600"></div>
+      </div>
+
+
+
+      <button id="btn-finalizar" class="btn btn-danger btn-xl" onclick="showFinalizarModal()">
+        ⏹ FINALIZAR RUTA
+      </button>
+    </div>
+
+    <!-- ESTADO D — Resumen final -->
+    <div id="state-d" class="auxiliar-card card hidden state-panel">
+      <div class="auxiliar-header">
+        <div class="icon-circle" style="background:linear-gradient(135deg,#22c55e,#16a34a)">✅</div>
+        <h1>Jornada Registrada</h1>
+      </div>
+
+      <div class="summary-box" id="resumen-final"></div>
+
+      <button class="btn btn-primary btn-xl" style="margin-top:1.25rem" onclick="handleLogout()">
+        Nueva consulta
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Modal de confirmación -->
+  <div id="modal-finalizar" class="modal-overlay hidden">
+    <div class="modal-content text-center">
+      <h2 style="margin-bottom:.5rem">¿Cómo terminó la ruta?</h2>
+      <p style="color:var(--text-secondary);font-size:.9rem;margin-bottom:1.5rem">Selecciona el resultado de tu jornada</p>
+      <div class="flex-col gap-md">
+        <button class="btn btn-success btn-xl" onclick="handleCheckout(true)">
+          ✅ Ruta cumplida
+        </button>
+        <button class="btn btn-danger btn-xl" onclick="handleCheckout(false)">
+          ❌ Ruta no cumplida
+        </button>
+        <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="auxiliar.js"></script>
+</body>
+</html>

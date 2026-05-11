@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "ux-designer": {
+      "source": "shubhamsaboo/awesome-llm-apps",
+      "sourceType": "github",
+      "skillPath": "awesome_agent_skills/ux-designer/SKILL.md",
+      "computedHash": "5059addf2e11d8f1062c524fd7363c9a2bd4deb038924f02436ffb6957c6c938"
+    }
+  }
+}

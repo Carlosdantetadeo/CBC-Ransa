@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Sistema Espejo Operativo</title>
+  <meta name="description" content="Gestión de auxiliares y configuración del Sistema Espejo Operativo">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-layout { padding: 1.5rem; }
+    .admin-section { margin-bottom: 2rem; }
+    .admin-section h2 {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: .75rem 1rem;
+      align-items: end;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .config-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .config-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+    .config-item label {
+      font-size: .8rem;
+      color: var(--text-secondary);
+      display: block;
+      margin-bottom: .25rem;
+    }
+    .config-item .desc {
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-top: .35rem;
+    }
+    .config-item input {
+      margin-top: .25rem;
+    }
+    .save-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <nav class="topbar">
+    <div class="topbar-brand">
+      <div class="logo">SE</div>
+      <span>Sistema Espejo</span>
+    </div>
+    <div class="topbar-nav">
+      <a href="auxiliar.html">Auxiliar</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="admin.html" class="active">Admin</a>
+    </div>
+  </nav>
+
+  <div class="container admin-layout">
+
+    <!-- Gestión de Auxiliares -->
+    <div class="admin-section">
+      <h2>👥 Gestión de Auxiliares</h2>
+
+      <!-- Formulario inline para agregar -->
+      <div class="card" style="margin-bottom:1rem;padding:1rem 1.25rem">
+        <h3 style="font-size:.9rem;color:var(--text-secondary);margin-bottom:.75rem">Agregar nuevo auxiliar</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="new-dni">DNI</label>
+            <input type="tel" id="new-dni" inputmode="numeric" maxlength="8" placeholder="12345678">
+          </div>
+          <div class="form-group">
+            <label for="new-nombre">Nombre completo</label>
+            <input type="text" id="new-nombre" placeholder="Juan Pérez">
+          </div>
+          <div class="form-group">
+            <label for="new-puesto">Puesto</label>
+            <input type="text" id="new-puesto" placeholder="Auxiliar de Reparto">
+          </div>
+          <div class="form-group">
+            <label for="new-zona">Zona de Operación</label>
+            <input type="text" id="new-zona" placeholder="Norte / Sur / etc.">
+          </div>
+          <div class="form-group">
+            <label for="new-cuenta">N° Cuenta Bancaria</label>
+            <input type="text" id="new-cuenta" placeholder="BCP: 191...">
+          </div>
+          <div class="form-group">
+            <label for="new-direccion">Dirección</label>
+            <input type="text" id="new-direccion" placeholder="Av. Principal 123">
+          </div>
+          <div class="form-group">
+            <label for="new-telefono">Teléfono Personal</label>
+            <input type="tel" id="new-telefono" maxlength="12" placeholder="987654321">
+          </div>
+          <div class="form-group">
+            <label for="new-contacto">Contacto Emergencia</label>
+            <input type="text" id="new-contacto" placeholder="Familiar">
+          </div>
+          <div class="form-group">
+            <label for="new-telemerg">Teléf. Emergencia</label>
+            <input type="tel" id="new-telemerg" maxlength="12" placeholder="987654321">
+          </div>
+        </div>
+        <div style="text-align: right; margin-bottom: 1rem;">
+          <button class="btn btn-primary" onclick="addAuxiliar()" id="btn-add">+ Agregar Auxiliar</button>
+        </div>
+        <div id="add-error" class="banner banner-danger hidden"></div>
+        <div id="add-success" class="banner banner-success hidden"></div>
+      </div>
+
+      <!-- Tabla de auxiliares -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>DNI</th>
+              <th>Nombre</th>
+              <th>Puesto</th>
+              <th>Teléfono</th>
+              <th>Activo</th>
+              <th>Fecha ingreso</th>
+            </tr>
+          </thead>
+          <tbody id="aux-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Configuración -->
+    <div class="admin-section">
+      <h2>⚙️ Configuración del Sistema</h2>
+      <div class="config-grid" id="config-grid"></div>
+      <div class="save-row">
+        <button class="btn btn-primary" onclick="saveConfig()" id="btn-save-config">💾 Guardar configuración</button>
+      </div>
+      <div id="config-success" class="banner banner-success hidden" style="margin-top:.75rem"></div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
