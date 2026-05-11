@@ -140,7 +140,7 @@ async function handleLogin() {
       }
     }
   } catch (e) {
-    showError('error-dni', 'Error de conexión. Intenta de nuevo.');
+    showError('error-dni', 'Error: ' + (e.message || 'Sin conexión'));
     console.error(e);
   }
 
