@@ -3,6 +3,12 @@
 // Sistema Espejo Operativo · Ransa / CBC
 // ============================================================
 
+const adminPass = prompt("🔒 Área restringida. Ingrese contraseña de Administrador:");
+if (adminPass !== "Logistica2024") {
+  document.body.innerHTML = "<h2 style='text-align:center;margin-top:50px;color:red;font-family:sans-serif'>⛔ Acceso Denegado</h2>";
+  throw new Error("Acceso denegado");
+}
+
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
